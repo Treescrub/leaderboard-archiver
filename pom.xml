@@ -85,7 +85,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.treescrub.App</mainClass>
+                    <mainClass>com.treescrub.leaderboard_archiver.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>

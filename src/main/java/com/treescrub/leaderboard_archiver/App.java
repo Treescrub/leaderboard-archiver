@@ -1,4 +1,4 @@
-package com.treescrub;
+package com.treescrub.leaderboard_archiver;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
