@@ -26,11 +26,11 @@ public class App extends Application {
         launch();
     }
 
-    private String getDatabasePath() {
+    private static String getDatabasePath() {
         return "/database.db";
     }
 
-    private void archiveRuns(String gameId) {
+    private static void archiveRuns(String gameId) {
         long startTime = System.currentTimeMillis() / 1000;
 
         String gameName = Spedran.getGame(gameId)
