@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.file.Path;
 import java.sql.*;
 
 public class App extends Application {
@@ -27,7 +28,7 @@ public class App extends Application {
     }
 
     private static String getDatabasePath() {
-        return "/database.db";
+        return Path.of("database.db").toAbsolutePath().toString();
     }
 
     private static void archiveRuns(String gameId) {
