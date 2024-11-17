@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.Optional;
 
 public class App extends Application {
     private static final Logger logger = LogManager.getLogger();
@@ -31,7 +32,13 @@ public class App extends Application {
         return Path.of("database.db").toAbsolutePath().toString();
     }
 
-    private static void archiveRuns(String gameId) {
+    /**
+     * Inserts a new archive into the database and returns the new archive ID.
+     *
+     * @param gameId game ID string for a game on SRC
+     * @return an Optional containing the archive ID if successful
+     */
+    private static Optional<Integer> insertNewArchive(String gameId) {
         long startTime = System.currentTimeMillis() / 1000;
 
         String gameName = Spedran.getGame(gameId)
@@ -43,12 +50,12 @@ public class App extends Application {
                 .join();
 
         if(gameName == null) {
-            return;
+            return Optional.empty();
         }
 
         try(
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:" + getDatabasePath());
-                PreparedStatement insertArchive = connection.prepareStatement("INSERT INTO archives (start_time, game_id, game_name) VALUES (?, ?, ?)");
+                PreparedStatement insertArchive = connection.prepareStatement("INSERT INTO archives (start_time, game_id, game_name) VALUES (?, ?, ?) RETURNING ROWID");
         ) {
             connection.setAutoCommit(false);
 
@@ -57,7 +64,12 @@ public class App extends Application {
             insertArchive.setString(3, gameName);
             insertArchive.executeUpdate();
 
+            ResultSet result = insertArchive.getResultSet();
+            int archiveId = result.getInt("id");
+
             connection.commit();
+
+            return Optional.of(archiveId);
         } catch(SQLException e) {
             throw new RuntimeException(e);
         }
