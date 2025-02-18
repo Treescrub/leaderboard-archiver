@@ -1,11 +1,6 @@
 package com.treescrub.leaderboard_archiver;
 
 import com.treescrub.spedran.Spedran;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,20 +11,11 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class App extends Application {
+public class App {
     private static final Logger logger = LogManager.getLogger();
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("javafx.fxml"));
-        Scene scene = new Scene(fxmlLoader. load());
-
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public static void main(String[] args) {
-        launch();
+
     }
 
     private static String getDatabasePath() {
@@ -132,9 +118,5 @@ public class App extends Application {
         } catch(SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void createDatabaseTest(ActionEvent actionEvent) {
-        createDatabase();
     }
 }
