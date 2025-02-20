@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS archives (
 	id	                INTEGER PRIMARY KEY AUTO_INCREMENT UNIQUE,
 	uuid                BINARY(16) NOT NULL,
 
-	start_time	        TIMESTAMP NOT NULL,
-	end_time	        TIMESTAMP NOT NULL,
+	start_time	        BIGINT NOT NULL,
+	end_time	        BIGINT NOT NULL,
 	total_runs	        INTEGER NOT NULL,
 	total_categories	INTEGER NOT NULL,
 	game_id	            VARCHAR(16) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS players (
 	run_id	    VARCHAR(16) NOT NULL,
 	type	    VARCHAR(5) NOT NULL,
 	name	    TEXT NOT NULL,
-	id	        TEXT NOT NULL,
+	id	        VARCHAR(16) NOT NULL,
 
 	PRIMARY KEY(archive_id, run_id),
 	FOREIGN KEY(archive_id) REFERENCES archives(id),
@@ -25,14 +25,14 @@ CREATE TABLE IF NOT EXISTS players (
 CREATE TABLE IF NOT EXISTS runs (
 	id	            VARCHAR(16) NOT NULL,
 	archive_id	    INTEGER NOT NULL,
-	archive_time	INTEGER NOT NULL,
+	archive_time	BIGINT NOT NULL,
 	category_id	    VARCHAR(16) NOT NULL,
 	category_name	TEXT NOT NULL,
-	level_id	    INTEGER,
+	level_id	    VARCHAR(16),
 	level_name	    TEXT,
 	comment	        TEXT,
-	submission_time	TIMESTAMP,
-	date_ran	    DATETIME,
+	submission_time	BIGINT,
+	date_ran	    DATE,
 
 	PRIMARY KEY(id, archive_id),
 	FOREIGN KEY(archive_id) REFERENCES archives(id)
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS status (
 	status	        VARCHAR(8) NOT NULL,
 	examiner_id	    VARCHAR(16),
 	examiner_name	TEXT,
-	verify_date	    TIMESTAMP,
+	verify_date	    BIGINT,
 
 	PRIMARY KEY(run_id, archive_id),
 	FOREIGN KEY(archive_id) REFERENCES archives(id),
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS variables (
 );
 
 CREATE TABLE IF NOT EXISTS versions (
-	version	        VARCHAR(16) NOT NULL UNIQUE,
+	version	        TEXT NOT NULL UNIQUE,
 	upgrade_time	TIMESTAMP,
 
 	PRIMARY KEY(version)
