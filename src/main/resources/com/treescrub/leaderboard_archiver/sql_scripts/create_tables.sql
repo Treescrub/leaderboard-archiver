@@ -15,10 +15,6 @@ CREATE TABLE IF NOT EXISTS run (
 	id	            VARCHAR(16) NOT NULL,
 	archive_id	    INTEGER NOT NULL,
 	archive_time	BIGINT NOT NULL,
-	category_id	    VARCHAR(16) NOT NULL,
-	category_name	TEXT NOT NULL,
-	level_id	    VARCHAR(16),
-	level_name	    TEXT,
 	comment	        TEXT,
 	submission_time	BIGINT,
 	date_ran	    DATE,
@@ -27,7 +23,30 @@ CREATE TABLE IF NOT EXISTS run (
 	FOREIGN KEY(archive_id) REFERENCES archive(id)
 );
 
-CREATE TABLE IF NOT EXISTS player (
+CREATE TABLE IF NOT EXISTS run_category (
+    archive_id      INTEGER NOT NULL,
+    run_id          VARCHAR(16) NOT NULL,
+    archive_time    BIGINT NOT NULL,
+    category_id	    VARCHAR(16) NOT NULL,
+	category_name	TEXT NOT NULL,
+
+	PRIMARY KEY(archive_id, run_id),
+	FOREIGN KEY(archive_id) REFERENCES archive(id),
+	FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
+);
+
+CREATE TABLE IF NOT EXISTS run_level (
+    archive_id      INTEGER NOT NULL,
+    run_id          VARCHAR(16) NOT NULL,
+    level_id	    VARCHAR(16),
+    level_name	    TEXT,
+
+    PRIMARY KEY(archive_id, run_id),
+    FOREIGN KEY(archive_id) REFERENCES archive(id),
+    FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
+);
+
+CREATE TABLE IF NOT EXISTS run_player (
 	archive_id  INTEGER NOT NULL,
 	run_id	    VARCHAR(16) NOT NULL,
 	type	    VARCHAR(5) NOT NULL,
@@ -39,7 +58,7 @@ CREATE TABLE IF NOT EXISTS player (
 	FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
 );
 
-CREATE TABLE IF NOT EXISTS split (
+CREATE TABLE IF NOT EXISTS run_split (
 	archive_id	INTEGER NOT NULL,
 	run_id	    VARCHAR(16) NOT NULL,
 	url	        TEXT NOT NULL,
@@ -49,7 +68,7 @@ CREATE TABLE IF NOT EXISTS split (
 	FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
 );
 
-CREATE TABLE IF NOT EXISTS status (
+CREATE TABLE IF NOT EXISTS run_status (
 	archive_id	    INTEGER NOT NULL,
 	run_id	        VARCHAR(16) NOT NULL,
 	status	        VARCHAR(8) NOT NULL,
@@ -87,7 +106,7 @@ CREATE TABLE IF NOT EXISTS run_time (
 	FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
 );
 
-CREATE TABLE IF NOT EXISTS variable (
+CREATE TABLE IF NOT EXISTS run_variable (
 	archive_id  INTEGER NOT NULL,
 	run_id	    VARCHAR(16) NOT NULL,
 	name	    TEXT NOT NULL,
@@ -98,7 +117,7 @@ CREATE TABLE IF NOT EXISTS variable (
 	FOREIGN KEY(run_id, archive_id) REFERENCES run(id, archive_id)
 );
 
-CREATE TABLE IF NOT EXISTS video (
+CREATE TABLE IF NOT EXISTS run_video (
 	archive_id	INTEGER NOT NULL,
 	run_id	    VARCHAR(16) NOT NULL,
 	url	        TEXT NOT NULL,
